@@ -16,10 +16,11 @@ regex_str = [
     r'<[^>]+>', # HTML tags
     r'(?:@[\w_]+)', # @-mentions
     r"(?:\#+[\w_]+[\w\'_\-]*[\w_]+)", # hash-tags
-    r'http[s]?://(?:[a-z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-f][0-9a-f]))+', # URLs
+    r'(?:http[s]?://(?:[a-z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-f][0-9a-f]))+)', # URLs
     r'(?:(?:\d+,?)+(?:\.?\d+)?)', # numbers
     r"(?:[a-z][a-z'\-_]+[a-z])", # words with - and '
     r'(?:[\w_]+)', # other words
+    r'(?:[\._]+)', # handle periods and lines of them
     r'(?:\S)+' # anything else
 ]
 
@@ -56,13 +57,13 @@ def preprocess(s, lowercase=True):
 
     return ' '.join([t for t in tokens if t]).replace('rt @user : ','')
 
-
-with io.open(outfile, 'w') as tweet_processed_text, io.open(infile, 'r') as fin:
+# using 'a' to append the file
+with io.open(outfile, 'a') as tweet_processed_text, io.open(infile, 'r') as fin:
     data = json.load(fin)
     for item in data:
         tweet_text = item["text"]
         print (tweet_text)
-        if not item["is_retweet"]:
+        if not item["is_retweet"] :
             # adding tweet's ID string to the tweet text for matching later
             # using tab as a separator
             output_line = unicode(preprocess(tweet_text.rstrip())+'\t'+item["id_str"]+'\n')

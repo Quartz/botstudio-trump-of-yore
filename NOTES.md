@@ -66,5 +66,49 @@ Commented out some prediction lines in `encode_char.py` since we're not going to
     
 ## Prepping Trump Tweets
 
+Inside trump_data, modified the `preprocess.py` from the original tweet2vec:
+
+- added the twitter str_id to each row, separated by a tab character
+- made the tokenizer handle periods better
+- changed the 'write' mode to 'append' mode for the output file
+
+Then, from `trump_data/` ran:
+
+```
+python preprocess.py 2009.json pre_prez_archive.txt
+python preprocess.py 2010.json pre_prez_archive.txt
+python preprocess.py 2011.json pre_prez_archive.txt
+python preprocess.py 2012.json pre_prez_archive.txt
+python preprocess.py 2013.json pre_prez_archive.txt
+python preprocess.py 2014.json pre_prez_archive.txt
+python preprocess.py 2015.json pre_prez_archive.txt
+python preprocess.py 2016.json pre_prez_archive.txt
+python preprocess.py 2017_pre0120.json pre_prez_archive.txt
+```
+
+Now I'm going to use a modified version of tweet2vec which removes the prediction functions since we're not doing any machine learning, just turning the tweets into vectors. It also accounts for the tab characters we've added (along with the twitter id_str values) in the data.
+
+Repo for Quartz version is here: https://github.com/Quartz/tweet2vec
+
+Over there, ran the modified `encode_char.py` which takes the following parameters:
+
+`python encode_char.py [datafile] [modelpath] [resultpath]`
+
+I'm just going to use the default model path to keep it happy. `best_model/`
+
+So, from `tweet2vec/tweet2vec`:
+
+```
+source activate vectoring
+python encode_char.py ../../botstudio-trump-echo/trump_data/pre_prez_archive.txt best_model/ ../../botstudio-trump-echo/trump_data/result/
+```
+
+And I got a 50 MB numpy file!
+
+Heading over to the `vector_tinkering_all` notebook ...
+
+
+
+
 
 

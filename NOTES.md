@@ -19,7 +19,6 @@ Using a new anaconda environment I'm calling `vectoring`.
     source activate vectoring
     conda install theano lasagne numpy
     pip install tweepy
-    pip install boto3
     ```
 
 Ran into a dependency error around `downsample`, which is deprecated but still used by the old Lasagne version that Theano installs. Soooo did this:
@@ -136,5 +135,30 @@ Aaaand ... we decided not to do this. But here's some code on how I was going to
 
 ## Just going to reply to Trump's tweets
 
+## Installing on EC2
 
+Had to install conda. See: https://www.continuum.io/downloads#linux
+
+```
+    wget "https://repo.continuum.io/archive/Anaconda2-4.4.0-Linux-x86_64.sh"
+    bash Anaconda2-4.4.0-Linux-x86_64.sh
+```
+
+(Answer 'yes' to adding the path to `.bashrc`, which is not the default)
+
+Did all the installs above.
+
+Added my `config.py` file to the top level of the repo.
+
+I'm going to use `forever` to run my python script, just like I do with node. But using `-c` to run a command.
+- `-l` is the log file
+-  `-m` is the max number of retries (don't want to upset Twitter)
+- `-c` is the command
+
+Note that I'm doing this command after `source activate vectoring` to start my conda environment.
+
+
+```
+forever start -l /home/ubuntu/botstudio-trump-of-yore/forever.log -m 1 -c python app.py
+```
 

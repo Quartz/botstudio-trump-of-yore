@@ -150,6 +150,22 @@ Did all the installs above.
 
 Added my `config.py` file to the top level of the repo.
 
+To avoid this error/warning when running the app ...
+
+`WARNING (theano.configdefaults): g++ not detected ! Theano will be unable to execute optimized C-implementations (for both CPU and GPU) and will default to Python implementations. Performance will be severely degraded. To remove this warning, set Theano flags cxx to an empty string.`
+
+... I added a file at the user home level called `.theanorc` containing this:
+
+```
+[global]
+floatX = float32
+device = cpu
+cxx = ""
+```
+
+
+
+
 I'm going to use `forever` to run my python script, just like I do with node. But using `-c` to run a command.
 - `-l` is the log file
 -  `-m` is the max number of retries (don't want to upset Twitter)
@@ -159,6 +175,7 @@ Note that I'm doing this command after `source activate vectoring` to start my c
 
 
 ```
+cd botstudio-trump-of-yore
 forever start -l /home/ubuntu/botstudio-trump-of-yore/forever.log -m 1 -c python app.py
 ```
 

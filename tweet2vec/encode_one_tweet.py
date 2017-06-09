@@ -1,9 +1,6 @@
 ## based on tweet2vec/encode_char.py
 
 import os
-# set environment variable for a CPU instead of a GPU. Do before importing Theano
-os.environ["THEANO_FLAGS"] = "THEANO_FLAGS=device=cpu,floatX=float32"
-
 import numpy as np
 import lasagne
 import theano

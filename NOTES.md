@@ -18,6 +18,7 @@ Using a new anaconda environment I'm calling `vectoring`.
     conda create --name vectoring python=2
     source activate vectoring
     conda install theano lasagne numpy
+    pip install tweepy
     ```
 
 Ran into a dependency error around `downsample`, which is deprecated but still used by the old Lasagne version that Theano installs. Soooo did this:
@@ -107,6 +108,10 @@ And I got a 50 MB numpy file!
 
 Heading over to the `vector_tinkering_all` notebook ...
 
+## Tweeting with Tweepy
+
+TRUMP_USER_ID = "25073877"
+POTUS_USER_ID = "822215679726100480"
 
 
 

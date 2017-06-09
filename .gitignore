@@ -29,5 +29,7 @@ Temporary Items
 # (use npm install to load them instead, or see readme)
 node_modules
 
-
+# Python config files and app files
+config.py
+*.pyc
 

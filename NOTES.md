@@ -19,6 +19,7 @@ Using a new anaconda environment I'm calling `vectoring`.
     source activate vectoring
     conda install theano lasagne numpy
     pip install tweepy
+    pip install boto3
     ```
 
 Ran into a dependency error around `downsample`, which is deprecated but still used by the old Lasagne version that Theano installs. Soooo did this:
@@ -113,7 +114,27 @@ Heading over to the `vector_tinkering_all` notebook ...
 TRUMP_USER_ID = "25073877"
 POTUS_USER_ID = "822215679726100480"
 
+## Getting Tweet Images
 
+So working on how to *display* both old and new tweets. Couldn't get the user experience to be very good (see images in notes_images).
+
+Then in talking with Chris Zarate, we had the idea of getting screenshots of both tweets and combining them into a single image. He already had been working on a screen-shot system running on AWS Lambda, and modified it to accept two tweet urls. Then it returns a url to the combined image.
+
+To do this, I need to connect ot the Lambda function in the AWS system. So installed [boto3](https://boto3.readthedocs.io/en/latest/guide/quickstart.html#installation), the AWS SDK for python.
+
+    `pip install boto3`
+    
+Aaaand ... we decided not to do this. But here's some code on how I was going to do it:
+
+```
+    # set up a json payload for sending to aws lambda
+    payload_setup = {}
+    payload_setup['urls'] = [new_tweet_url, historic_tweet_url]
+    payload_json = json.dumps(payload_setup)
+        #=> {"urls": ["url_for_top_tweet", "url_for_bottom_tweet"]}
+```
+
+## Just going to reply to Trump's tweets
 
 
 

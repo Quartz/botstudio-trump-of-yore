@@ -5,6 +5,7 @@ import re
 import json
 import time
 import requests
+import random
 
 from tweepy.streaming import StreamListener
 from tweepy import OAuthHandler
@@ -19,6 +20,7 @@ import config     # contains all the keys
 # TWITTER_USER = "66575819"  # testing account
 TWITTER_USER = "25073877"
 SIMILARITY_THRESHOLD = 0.55
+LOOKS_LIKE_WORDS = ['matches up with', 'looks like', 'is similar to', 'looks to me like', 'resembles', 'is mathematically similar to', 'is akin to', 'seems to match', 'might match', 'reminds me of', 'feels like']
 
 auth = OAuthHandler(config.consumer_key, config.consumer_secret)
 auth.set_access_token(config.access_token, config.access_token_secret)
@@ -69,7 +71,10 @@ def tweetThis(new_tweet, historic_tweet_id):
     historic_tweet_date = historic_tweet.created_at.strftime('%B %Y')
     
     # tweet the reply! Note that it has to start with @ to be a reply.
-    my_tweet = api.update_status(status='@%s To my bot brain, that looks similar to this tweet from %s: %s' % (new_tweet['user']['screen_name'], historic_tweet_date, historic_tweet_url), in_reply_to_status_id=int(new_tweet['id']))
+    compose_tweet = '@%s This tweet %s this one from %s: %s' % (new_tweet['user']['screen_name'], random.choice(LOOKS_LIKE_WORDS), historic_tweet_date, historic_tweet_url)
+    
+    # tweet it!
+    my_tweet = api.update_status(status=compose_tweet, in_reply_to_status_id=int(new_tweet['id']))
     
     print ("Tweeted: %s" % my_tweet.text)
     

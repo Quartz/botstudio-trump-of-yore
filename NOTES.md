@@ -176,6 +176,6 @@ Note that I'm doing this command after `source activate vectoring` to start my c
 
 ```
 cd botstudio-trump-of-yore
-forever start -l /home/ubuntu/botstudio-trump-of-yore/forever.log -m 1 -c python app.py
+forever start -l /home/ubuntu/botstudio-trump-of-yore/forever.log -o out.log -a -m 1 -c python app.py
 ```
 

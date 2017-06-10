@@ -32,4 +32,8 @@ node_modules
 # Python config files and app files
 config.py
 *.pyc
+tweet2vec/*.pyc
+tweepy/*.pyc
+trump_data/*.pyc
+
 

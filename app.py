@@ -13,7 +13,7 @@ from tweepy import Stream
 from tweepy import API
 from sklearn.metrics.pairwise import cosine_similarity
 
-from tweet2vec.encode_one_tweet import encode
+from tweet2vec.encode_one_tweet import encode_to_vector
 from trump_data.preprocess_one_tweet import preprocess
 import config     # contains all the keys
 
@@ -35,7 +35,7 @@ def compareTweet(tweet):
     # encode the tweet into a vector (using encode_one_tweet.py)
     # and then reshape it for the comparison
     print ("Encoding the tweet into a vector ...")
-    single_item = encode(processed_tweet).reshape(1,500)
+    single_item = encode_to_vector(processed_tweet).reshape(1,500)
 
     # find the similarities
     print ("Calculating similarities ...")
@@ -64,6 +64,7 @@ def compareTweet(tweet):
     else:
         
         print ("No tweet. Similary score too low.")
+        
         return False
         
 def tweetThis(new_tweet, historic_tweet_id):

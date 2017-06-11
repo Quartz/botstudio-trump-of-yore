@@ -25,6 +25,7 @@ def tokenize(s):
     return tokens_re.findall(s)
 
 def preprocess(s, lowercase=True):
+        
     tokens = tokenize(s)
     tokens = [token.lower() for token in tokens]
 

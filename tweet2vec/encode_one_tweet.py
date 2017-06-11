@@ -28,14 +28,14 @@ def classify(tweet, t_mask, params, n_classes, n_chars):
 
     return lasagne.layers.get_output(l_dense), lasagne.layers.get_output(emb_layer)
 
-def encode(incoming_tweet_text):
+def encode_to_vector(incoming_tweet_text):
 
     model_path = "tweet2vec/best_model"
 
     print("Preparing Data...")
     # Test data
     Xt = []
-    Xc = incoming_tweet_text.rstrip('\n')
+    Xc = incoming_tweet_text.encode('utf-8').rstrip('\n')  # change unicode to utf-8, as was the file
     print (Xc)
     Xt.append(Xc[:MAX_LENGTH])
 

@@ -35,8 +35,8 @@ def encode_to_vector(incoming_tweet_text):
     print("Preparing Data...")
     # Test data
     Xt = []
-    Xc = incoming_tweet_text.encode('utf-8').rstrip('\n')  # change unicode to utf-8, as was the file
-    print (Xc)
+    Xc = incoming_tweet_text.rstrip('\n') 
+    print (Xc).encode('utf-8')
     Xt.append(Xc[:MAX_LENGTH])
 
     # Model

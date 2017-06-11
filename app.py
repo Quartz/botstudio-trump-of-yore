@@ -17,11 +17,12 @@ from tweet2vec.encode_one_tweet import encode_to_vector
 from trump_data.preprocess_one_tweet import preprocess
 import config     # contains all the keys
 
-TWITTER_USER = "66575819"  # testing sandbox account
-# TWITTER_USER = "25073877"  # realDonaldTrump
+TWITTER_USER = "25073877"  # realDonaldTrump
+# TWITTER_USER = "66575819"  # testing sandbox account
+MUTE_FOR_TESTING = False;
+
 SIMILARITY_THRESHOLD = 0.55
 LOOKS_LIKE_WORDS = ['matches up with', 'looks like', 'is similar to', 'looks to me like', 'resembles', 'is mathematically similar to', 'is akin to', 'seems to match', 'might match', 'reminds me of', 'feels like']
-MUTE_FOR_TESTING = True;
 
 auth = OAuthHandler(config.consumer_key, config.consumer_secret)
 auth.set_access_token(config.access_token, config.access_token_secret)

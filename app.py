@@ -91,7 +91,7 @@ def tweetThis(new_tweet, historic_tweet_id):
 
     else:
         
-        print ("MUTED but would have tweeted: %s" %  my_tweet.text)
+        print ("MUTED but would have tweeted: %s" %  compose_tweet)
     
     # send a note to slack
     phrase_for_slack = "In response to the first tweet, I found the second one from %s. %s %s" % (historic_tweet_date, new_tweet_url, historic_tweet_url)

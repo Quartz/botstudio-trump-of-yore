@@ -97,6 +97,7 @@ def tweetThis(new_tweet, historic_tweet_id):
     # send a note to slack
     phrase_for_slack = "In response to the first tweet, I found the second one from %s. %s %s" % (historic_tweet_date, new_tweet_url, historic_tweet_url)
     slackThis(phrase_for_slack)
+    print("End processing.")
     return True
     
 def slackThis(phrase):
@@ -115,14 +116,13 @@ def slackThis(phrase):
         print "Slacked: %s" % phrase
         return True
     
-    
+# from tweepy ... this is what fires when a matching tweet is detected    
 class StdOutListener(StreamListener):
-    """ A listener handles tweets that are received from the stream.
-    This is a basic listener that just prints received tweets to stdout.
-
-    """
+    
     def on_data(self, data):
         new_tweet = json.loads(data)
+
+
         
         # check to see if it's actually trump tweeting
         # (the 'follow' stream also picks up replies to 'follow' tweets)
@@ -130,13 +130,18 @@ class StdOutListener(StreamListener):
             
             print("Detected tweet: %s" % new_tweet)
             
-            # go see if the text matches any previous tweet
-            historic_tweet_url = compareTweet(new_tweet['text'])
+            # check to see if it's a retweet, which we're not processing
+            if re.match(u'^RT ', new_tweet['text']) or new_tweet['is_quote_status'] or in_reply_to_status_id not None:
+                print("Looks like a retweet. Ending process.")
+                return True
             
-            if historic_tweet_url:
-                tweetThis(new_tweet, historic_tweet_url)
-            
-            return True
+            else:                
+                # go see if the text matches any previous tweet
+                historic_tweet_url = compareTweet(new_tweet['text'])
+                
+                if historic_tweet_url:
+                    tweetThis(new_tweet, historic_tweet_url)
+                    return True
 
     def on_error(self, status):
         print("ERROR FROM TWITTER: %s" % status)

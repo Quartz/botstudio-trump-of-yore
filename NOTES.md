@@ -1,5 +1,7 @@
 # Trump Echo notes
 
+Contemporaneous  
+
 ## Research & Resources
 
 Interesting answers to Quora question here: https://www.quora.com/What-are-some-NLP-techniques-that-can-be-used-to-find-similar-Twitter-messages
@@ -176,6 +178,7 @@ Note that I'm doing this command after `source activate vectoring` to start my c
 
 ```
 cd botstudio-trump-of-yore
-forever start -l /home/ubuntu/botstudio-trump-of-yore/forever.log -o out.log -a -m 1 -c python app.py
+source activate vectoring
+forever start -a -l /home/ubuntu/botstudio-trump-of-yore/forever.log -o /home/ubuntu/botstudio-trump-of-yore/out.log -m 1 -c python app.py
 ```
 

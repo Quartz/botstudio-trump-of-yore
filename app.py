@@ -131,7 +131,7 @@ class StdOutListener(StreamListener):
             print("Detected tweet: %s" % new_tweet)
             
             # check to see if it's a retweet, which we're not processing
-            if re.match(u'^RT ', new_tweet['text']) or new_tweet['is_quote_status'] or in_reply_to_status_id not None:
+            if re.match(u'^RT ', new_tweet['text']) or new_tweet['is_quote_status'] or new_tweet['in_reply_to_status_id'] is not None:
                 print("Looks like a retweet. Ending process.")
                 return True
             

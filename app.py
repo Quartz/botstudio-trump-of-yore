@@ -6,6 +6,9 @@ import json
 import time
 import requests
 import random
+import boto3
+import urllib.request
+import io
 
 from tweepy.streaming import StreamListener
 from tweepy import OAuthHandler
@@ -17,16 +20,20 @@ from tweet2vec.encode_one_tweet import encode_to_vector
 from trump_data.preprocess_one_tweet import preprocess
 import config     # contains all the keys
 
-TWITTER_USER = "25073877"  # realDonaldTrump
-# TWITTER_USER = "66575819"  # testing sandbox account
+# TWITTER_USER = "25073877"  # realDonaldTrump
+TWITTER_USER = "66575819"  # testing sandbox account
 MUTE_FOR_TESTING = False;
 
 SIMILARITY_THRESHOLD = 0.55
 LOOKS_LIKE_WORDS = ['matches up with', 'looks like', 'is similar to', 'looks to me like', 'resembles', 'is mathematically similar to', 'is akin to', 'seems to match', 'might match', 'reminds me of', 'feels like']
 
+## setup for Twitter via tweepy 
 auth = OAuthHandler(config.consumer_key, config.consumer_secret)
 auth.set_access_token(config.access_token, config.access_token_secret)
 api = API(auth)
+
+## setup for AWS via boto3
+client = boto3.client('lambda', region_name='us-east-1')
 
 def compareTweet(tweet):
     
@@ -80,8 +87,10 @@ def tweetThis(new_tweet, historic_tweet_id):
     # calculate the historic tweet's month and year.
     historic_tweet_date = historic_tweet.created_at.strftime('%B %Y')
     
+    interstitial_phrase = random.choice(LOOKS_LIKE_WORDS)
+    
     # tweet the reply! Note that it has to start with @ to be a reply.
-    compose_tweet = '@%s This tweet %s this one from %s: %s' % (new_tweet['user']['screen_name'], random.choice(LOOKS_LIKE_WORDS), historic_tweet_date, historic_tweet_url)
+    compose_tweet = '@%s This tweet %s this one from %s: %s' % (new_tweet['user']['screen_name'], interstitial_phrase, historic_tweet_date, historic_tweet_url)
     
     if not MUTE_FOR_TESTING:
                 
@@ -89,10 +98,17 @@ def tweetThis(new_tweet, historic_tweet_id):
         my_tweet = api.update_status(status=compose_tweet, in_reply_to_status_id=int(new_tweet['id']))
         
         print ("Tweeted: %s" % my_tweet.text)
-
-    else:
         
-        print ("MUTED but would have tweeted: %s" %  compose_tweet)
+    # get the composite image of the two tweets
+    image_data = getTweetImages(new_tweet_url, historic_tweet_url)
+    
+    # set up the picture tweet
+    picture_tweet = 'The top tweet %s the bottom one from %s.' % (interstitial_phrase, historic_tweet_date)
+    
+    if not MUTE_FOR_TESTING:
+        
+        # tweet the image tweet
+        api.update_with_media(filename="old_new_trump_tweets.jpg", status=picture_tweet, file=image_data)
     
     # send a note to slack
     phrase_for_slack = "In response to the first tweet, I found the second one from %s. %s %s" % (historic_tweet_date, new_tweet_url, historic_tweet_url)
@@ -116,6 +132,34 @@ def slackThis(phrase):
         print "Slacked: %s" % phrase
         return True
     
+def getTweetImages(new_url, old_url):
+    
+    # this function first sends the tweet URLs to a service built by quartz to 
+    # take screenshots of images and tweets
+    
+    # set up a json payload for sending to aws lambda
+    payload_setup = {}
+    payload_setup['urls'] = [new_url, old_url]
+    payload_json = json.dumps(payload_setup)
+        #=> {"urls": ["url_for_top_tweet", "url_for_bottom_tweet"]}
+    
+    # this triggers (invokes) the screenshot function    
+    lambda_response = client.invoke(
+        FunctionName='composite-bot',
+        InvocationType='RequestResponse',
+        Payload=payload_json
+        )
+        
+    # the response contains an image URL
+    lambda_response_json = json.load(lambda_response['Payload'])    
+    image_url = lambda_response_json
+    
+    # now actually get the image
+    with urllib.request.urlopen(image_url) as url:
+        image = io.BytesIO(url.read())
+
+    return image
+
 # from tweepy ... this is what fires when a matching tweet is detected    
 class StdOutListener(StreamListener):
     

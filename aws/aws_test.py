@@ -1,7 +1,7 @@
 import boto3
 import json
 
-client = boto3.client('lambda')
+client = boto3.client('lambda', region_name='us-east-1')
 
 # sample tweet urls
 new_tweet_url = "https://twitter.com/realDonaldTrump/status/875438639823675392" 

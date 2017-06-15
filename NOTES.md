@@ -21,6 +21,7 @@ Using a new anaconda environment I'm calling `vectoring`.
     source activate vectoring
     conda install theano lasagne numpy
     pip install tweepy
+    pip install boto3
     ```
 
 Ran into a dependency error around `downsample`, which is deprecated but still used by the old Lasagne version that Theano installs. Soooo did this:

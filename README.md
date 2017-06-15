@@ -8,7 +8,7 @@ This project relies heavily on [tweet2vec](https://github.com/bdhingra/tweet2vec
 
 The project also includes archived tweets by @realDonaldTrump from the Trump Twitter Archive. Check out the [site](http://www.trumptwitterarchive.com/), the [code(https://github.com/bpb27/trump-tweet-archive)] and the [data](https://github.com/bpb27/trump-tweet-archive/tree/master/data/realdonaldtrump).
 
-The code also uses the Python packages [conda](https://conda.io/docs/install/quick.html), [theano](http://deeplearning.net/software/theano/), [lasagne](https://github.com/Lasagne/Lasagne), [numpy](http://www.numpy.org/), [scikit-learn](http://scikit-learn.org/stable/install.html), and [tweepy](http://www.tweepy.org/).
+The code also uses the Python packages [conda](https://conda.io/docs/install/quick.html), [theano](http://deeplearning.net/software/theano/), [lasagne](https://github.com/Lasagne/Lasagne), [numpy](http://www.numpy.org/), [scikit-learn](http://scikit-learn.org/stable/install.html), [boto3](https://boto3.readthedocs.io/en/latest/guide/quickstart.html#installation) and [tweepy](http://www.tweepy.org/).
 
 Cobbled together by John Keefe in the Quartz Bot Studio. Read about how and why.
 

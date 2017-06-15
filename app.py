@@ -7,7 +7,7 @@ import time
 import requests
 import random
 import boto3
-import urllib.request
+import urllib, cStringIO
 import io
 
 from tweepy.streaming import StreamListener
@@ -155,8 +155,7 @@ def getTweetImages(new_url, old_url):
     image_url = lambda_response_json
     
     # now actually get the image
-    with urllib.request.urlopen(image_url) as url:
-        image = io.BytesIO(url.read())
+    image = cStringIO.StringIO(urllib.urlopen(image_url).read())
 
     return image
 

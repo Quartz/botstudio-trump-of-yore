@@ -19,4 +19,4 @@ lambda_response = client.invoke(
     Payload=payload_json
     )
     
-print(lambda_response)
+print(lambda_response.Payload)

@@ -20,12 +20,12 @@ from tweet2vec.encode_one_tweet import encode_to_vector
 from trump_data.preprocess_one_tweet import preprocess
 import config     # contains all the keys
 
-# TWITTER_USER = "25073877"  # realDonaldTrump
-TWITTER_USER = "66575819"  # testing sandbox account
+TWITTER_USER = "25073877"  # realDonaldTrump
+# TWITTER_USER = "66575819"  # testing sandbox account
 MUTE_FOR_TESTING = False;
 
 SIMILARITY_THRESHOLD = 0.55
-LOOKS_LIKE_WORDS = ['matches up with', 'looks like', 'is similar to', 'looks to me like', 'resembles', 'is mathematically similar to', 'is akin to', 'seems to match', 'might match', 'reminds me of', 'feels like']
+LOOKS_LIKE_WORDS = ['matches up with', 'looks like', 'is similar to', 'looks sort of like', 'resembles', 'is mathematically similar to', 'is akin to', 'seems to match', 'might match', 'is reminiscent of', 'feels like']
 
 ## setup for Twitter via tweepy 
 auth = OAuthHandler(config.consumer_key, config.consumer_secret)
@@ -100,15 +100,17 @@ def tweetThis(new_tweet, historic_tweet_id):
         print ("Tweeted: %s" % my_tweet.text)
         
     # get the composite image of the two tweets
+    print("Getting the composite image ...")
     image_data = getTweetImages(new_tweet_url, historic_tweet_url)
     
     # set up the picture tweet
-    picture_tweet = 'The top tweet %s the bottom one from %s.' % (interstitial_phrase, historic_tweet_date)
+    picture_tweet = 'According to me, the top tweet %s the bottom one from %s.' % (interstitial_phrase, historic_tweet_date)
     
     if not MUTE_FOR_TESTING:
         
         # tweet the image tweet
         api.update_with_media(filename="old_new_trump_tweets.jpg", status=picture_tweet, file=image_data)
+        print("Tweeted image tweet: %s" % picture_tweet)
     
     # send a note to slack
     phrase_for_slack = "In response to the first tweet, I found the second one from %s. %s %s" % (historic_tweet_date, new_tweet_url, historic_tweet_url)

@@ -19,4 +19,5 @@ lambda_response = client.invoke(
     Payload=payload_json
     )
     
-print(lambda_response['Payload'].read())
+lambda_response_json = json.load(lambda_response['Payload'])    
+print(lambda_response_json)

@@ -117,6 +117,9 @@ Heading over to the `vector_tinkering_all` notebook ...
 TRUMP_USER_ID = "25073877"
 POTUS_USER_ID = "822215679726100480"
 
+## API keys, tokens, secrets
+
+These are all in a file called `config.py` which is not included in this repo. I have included an `config_example.py` which mirrors the `config.py` file, but without the secret codes.
 
 ## Installing on EC2
 

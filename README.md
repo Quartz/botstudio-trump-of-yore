@@ -14,6 +14,8 @@ Cobbled together by John Keefe in the Quartz Bot Studio. Read about how and why 
 
 ## Experimental Zone
 
-This was a quick-turnaround experiment and could contain errors, mistakes and sloppy code. Use at your own risk! :-)
+This was a quick-turnaround experiment and could contain errors, mistakes and sloppy code. Use at your own risk! :-) 
+
+The notes I took along the way are in [NOTES.md](NOTES.md). 
 
 That said, feel free to reach out to us at bots@qz.com if you have questions or thoughts.

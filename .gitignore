@@ -36,4 +36,9 @@ tweet2vec/*.pyc
 tweepy/*.pyc
 trump_data/*.pyc
 
+# trump raw json data
+trump_data/*.json
+
+
+
 

@@ -25,7 +25,7 @@ TWITTER_USER = "25073877"  # realDonaldTrump
 MUTE_FOR_TESTING = False;
 
 SIMILARITY_THRESHOLD = 0.55
-LOOKS_LIKE_WORDS = ['matches up with', 'looks like', 'is similar to', 'looks sort of like', 'resembles', 'is mathematically similar to', 'is akin to', 'seems to match', 'might match', 'is reminiscent of', 'feels like']
+LOOKS_LIKE_WORDS = ['matches up with', 'looks like', 'is similar to', 'evokes', 'resembles', 'is mathematically similar to', 'is akin to', 'seems to match', 'might match', 'is reminiscent of', 'feels like']
 
 ## setup for Twitter via tweepy 
 auth = OAuthHandler(config.consumer_key, config.consumer_secret)
@@ -90,7 +90,7 @@ def tweetThis(new_tweet, historic_tweet_id):
     interstitial_phrase = random.choice(LOOKS_LIKE_WORDS)
     
     # tweet the reply! Note that it has to start with @ to be a reply.
-    compose_tweet = '@%s This tweet %s this one from %s: %s' % (new_tweet['user']['screen_name'], interstitial_phrase, historic_tweet_date, historic_tweet_url)
+    compose_tweet = '@%s According to me, this tweet %s this one from %s: %s' % (new_tweet['user']['screen_name'], interstitial_phrase, historic_tweet_date, historic_tweet_url)
     
     if not MUTE_FOR_TESTING:
                 
@@ -109,6 +109,7 @@ def tweetThis(new_tweet, historic_tweet_id):
     if not MUTE_FOR_TESTING:
         
         # tweet the image tweet
+        print("Posting tweet with composite image ...")
         api.update_with_media(filename="old_new_trump_tweets.jpg", status=picture_tweet, file=image_data)
         print("Tweeted image tweet: %s" % picture_tweet)
     
@@ -145,6 +146,8 @@ def getTweetImages(new_url, old_url):
     payload_json = json.dumps(payload_setup)
         #=> {"urls": ["url_for_top_tweet", "url_for_bottom_tweet"]}
     
+    print("Getting the composite image URL from Quartz composite-bot service ...")
+    
     # this triggers (invokes) the screenshot function    
     lambda_response = client.invoke(
         FunctionName='composite-bot',
@@ -155,6 +158,9 @@ def getTweetImages(new_url, old_url):
     # the response contains an image URL
     lambda_response_json = json.load(lambda_response['Payload'])    
     image_url = lambda_response_json
+    
+    print("Got URL %s ..." % image_url)
+    print("Downloading image from there ...")
     
     # now actually get the image
     image = cStringIO.StringIO(urllib.urlopen(image_url).read())

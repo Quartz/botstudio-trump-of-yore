@@ -103,15 +103,17 @@ def tweetThis(new_tweet, historic_tweet_id):
     print("Getting the composite image ...")
     image_data = getTweetImages(new_tweet_url, historic_tweet_url)
     
-    # set up the picture tweet
-    picture_tweet = 'According to me, the top tweet %s the bottom one from %s.' % (interstitial_phrase, historic_tweet_date)
+    if image_data:
     
-    if not MUTE_FOR_TESTING:
+        # set up the picture tweet
+        picture_tweet = 'According to me, the top tweet %s the bottom one from %s.' % (interstitial_phrase, historic_tweet_date)
         
-        # tweet the image tweet
-        print("Posting tweet with composite image ...")
-        api.update_with_media(filename="old_new_trump_tweets.jpg", status=picture_tweet, file=image_data)
-        print("Tweeted image tweet: %s" % picture_tweet)
+        if not MUTE_FOR_TESTING:
+            
+            # tweet the image tweet
+            print("Posting tweet with composite image ...")
+            api.update_with_media(filename="old_new_trump_tweets.jpg", status=picture_tweet, file=image_data)
+            print("Tweeted image tweet: %s" % picture_tweet)
     
     # send a note to slack
     phrase_for_slack = "In response to the first tweet, I found the second one from %s. %s %s" % (historic_tweet_date, new_tweet_url, historic_tweet_url)
@@ -160,12 +162,22 @@ def getTweetImages(new_url, old_url):
     image_url = lambda_response_json
     
     print("Got URL %s ..." % image_url)
-    print("Downloading image from there ...")
     
-    # now actually get the image
-    image = cStringIO.StringIO(urllib.urlopen(image_url).read())
+    if image_url is not None:
+    
+        print("Downloading image from there ...")
+        
+        # now actually get the image
+        image = cStringIO.StringIO(urllib.urlopen(image_url).read())
 
-    return image
+        return image
+        
+    else: 
+        
+        print("No URL, so can't get image ...")
+        print("Skipping the image tweet ...")
+        
+        return false
 
 # from tweepy ... this is what fires when a matching tweet is detected    
 class StdOutListener(StreamListener):

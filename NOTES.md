@@ -182,6 +182,6 @@ Note that I'm doing this command after `source activate vectoring` to start my c
 ```
 cd botstudio-trump-of-yore
 source activate vectoring
-forever start -a -l /home/ubuntu/botstudio-trump-of-yore/forever.log -o /home/ubuntu/botstudio-trump-of-yore/out.log -m 1 -c python app.py
+forever start -a -l /home/ubuntu/botstudio-trump-of-yore/forever.log  -c python app.py
 ```
 
